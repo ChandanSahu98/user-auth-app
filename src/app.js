@@ -19,6 +19,11 @@ app.use(cors({
 }))
 
 // Routes
+app.use("/", (req, res) => {
+    res.status(200).json({
+        Text: "Hello World!"
+    })
+})
 app.use("/api/v1/auth", authRoutes);
 
 // Protected Route Example
