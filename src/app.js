@@ -10,19 +10,19 @@ const app = express();
 // 1. Set Security HTTP Headers (Helps prevent XSS)
 app.use(helmet());
 
+app.use(cors({
+    origin: (origin, callback) => callback(null, true),
+    credentials: true,
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization"
+}));
+
 // 2. Body Parser (Reading data from body into req.body)
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-    cors({
-        origin: "*",
-        methods: "GET,POST,PUT,DELETE",
-        allowedHeaders: "Content-Type,Authorization"
-    })
-);
 
 // Routes
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
     res.status(200).json({
         Text: "Hello World!"
     });
