@@ -13,22 +13,25 @@ app.use(helmet());
 // 2. Body Parser (Reading data from body into req.body)
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-    origin: 'https://user-auth-app-e05l.onrender.com/', 
-    credentials: true
-}))
+app.use(
+    cors({
+        origin: "*",
+        methods: "GET,POST,PUT,DELETE",
+        allowedHeaders: "Content-Type,Authorization"
+    })
+);
 
 // Routes
 app.use("/", (req, res) => {
     res.status(200).json({
         Text: "Hello World!"
-    })
-})
+    });
+});
 app.use("/api/v1/auth", authRoutes);
 
 // Protected Route Example
 app.get("/api/protected", authMiddleware.verify, (req, res) => {
-    console.log(req.url)
+    console.log(req.url);
     res.json({ message: "You have access to this protected route" });
 });
 
@@ -42,7 +45,5 @@ app.use((req, res, next) => {
 
 // Global Error Handler
 app.use(errorMiddleware);
-
-
 
 module.exports = app;
